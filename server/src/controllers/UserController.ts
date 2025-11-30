@@ -34,7 +34,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
   }
 
   if (!name || !email || !password || !employeeId) {
-    throw new ApiError(ApiMessages.VALIDATION_REQUIRED_FIELDS);
+    throw new ApiError(ApiMessages.REQUIRED_FIELDS);
   }
 
   const userExists = await User.findOne({ email });
@@ -88,7 +88,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body as { email?: string; password?: string };
 
   if (!email || !password) {
-    throw new ApiError(ApiMessages.VALIDATION_LOGIN_FIELDS);
+    throw new ApiError(ApiMessages.LOGIN_FIELDS);
   }
 
   const user = await User.findOne({ email });

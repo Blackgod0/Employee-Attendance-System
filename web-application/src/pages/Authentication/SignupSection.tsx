@@ -101,7 +101,7 @@ export default function Signup() {
     }, []);
 
     return (
-        <motion.main className="h-screen w-screen flex flex-col items-center relative overflow-x-hidden" initial={{ x: 120 }} animate={{ x: 0 }} transition={{ duration: 0.3, ease: "easeIn" }}>
+        <motion.main className="h-screen w-screen flex flex-col items-center relative overflow-x-hidden" initial={{ x: 120 }} animate={{ x: 0 }} transition={{ duration: 0.1, ease: "easeIn" }}>
             <p className="fixed top-4 left-4 text-2xl font-medium"> EchoDraft </p>
 
             {/* signup section */}
