@@ -1,3 +1,18 @@
+---
+
+## 👨‍💻 Author  
+**Karuppasamy P**
+## College 
+**SNS COLLEGE OF TECHNOLOGY**
+
+## 📞 Contact  
+- **Email:** karuppasamypitchai01@gmail.com  
+- **Phone:** +91 9363475713  
+- **LinkedIn:** www.linkedin.com/in/karuppasamy-pitchai  
+- **GitHub:** https://github.com/Blackgod0  
+
+---
+
 # Employee Attendance System
 A full-stack attendance tracking application built for organizations to manage daily employee attendance with two user roles — Employee and Manager. Employees can mark their daily check-ins/check-outs, while managers can monitor the attendance of their entire team, generate reports, and view insights through dashboards.
 
