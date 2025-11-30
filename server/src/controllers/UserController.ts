@@ -13,13 +13,16 @@ import { AuthUser } from "../utils/types/authTypes";
 const ACCESS_TOKEN_SECRET = process.env.JWT_SECRET as string;
 const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH as string;
 
+const MANAGER_ACCESS_TOKEN_SECRET = process.env.JWT_MANAGER_SECRET as string;
+const MANAGER_REFRESH_TOKEN_SECRET = process.env.JWT_MANAGER_REFRESH as string;
+
 // helper functions
-function createAccessToken(payload: { _id: string; email: string, role?: "EMPLOYEE" | "MANAGER" }) {
-  return jwt.sign({ ...payload, role: payload.role ?? "EMPLOYEE" }, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+function createAccessToken(payload: { _id: string; email: string, role?: "EMPLOYEE" | "MANAGER" }, isManager = false) {
+  return jwt.sign({ ...payload, role: payload.role ?? "EMPLOYEE" }, isManager ? MANAGER_ACCESS_TOKEN_SECRET : ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
 }
 
-function createRefreshToken(payload: { _id: string; email: string, role?: "EMPLOYEE" | "MANAGER" }) {
-  return jwt.sign({ ...payload, role: payload.role ?? "EMPLOYEE" }, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+function createRefreshToken(payload: { _id: string; email: string, role?: "EMPLOYEE" | "MANAGER" }, isManager = false) {
+  return jwt.sign({ ...payload, role: payload.role ?? "EMPLOYEE" }, isManager ? MANAGER_REFRESH_TOKEN_SECRET : REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 }
 
 // @desc    Register an employee user
@@ -38,6 +41,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
   }
 
   const userExists = await User.findOne({ email });
+
   if (userExists) {
     throw new ApiError(ApiMessages.USER_ALREADY_EXISTS);
   }
@@ -105,11 +109,11 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const _id = user._id.toString();
 
   const accessToken = createAccessToken(
-    { _id, email: user.email },
+    { _id, email: user.email }, user.role === "MANAGER"
   );
 
   const refreshToken = createRefreshToken(
-    { _id, email: user.email },
+    { _id, email: user.email }, user.role === "MANAGER"
   );
 
   res.cookie("refreshToken", refreshToken, {
@@ -123,6 +127,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
     accessToken,
+    manager: user.role === "MANAGER"
   });
 });
 

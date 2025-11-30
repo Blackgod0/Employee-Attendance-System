@@ -60,7 +60,7 @@ export default function Signin() {
             if (result.success) {
                 // You can replace this with toast/snackbar
                 alert(result.message || "Login successful");
-                window.location.href = "/"; // redirect to home/dashboard
+                window.location.href = result.manager ? "/manager/dashboard" : "/employee/dashboard"; // redirect to home/dashboard
             } else {
                 alert(result.message || "Login failed");
             }
@@ -83,7 +83,7 @@ export default function Signin() {
 
     return (
         <motion.main className="min-h-screen w-screen flex flex-col items-center relative overflow-x-hidden" initial={{ x: -120 }} animate={{ x: 0 }} transition={{ duration: 0.1, ease: "easeIn" }}>
-            <p className="fixed top-4 left-4 text-2xl font-medium"> EchoDraft </p>
+            <p className="fixed top-4 left-4 text-2xl font-medium"> AttendoX </p>
 
             <div className="relative h-[440px] w-[450px] pt-24">
                 {/* email & password section */}

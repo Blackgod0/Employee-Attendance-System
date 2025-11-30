@@ -3,7 +3,8 @@ import './App.css'
 import Authenticate from './pages/Authentication/Authentication'
 import Landing from './pages/Landing'
 import NotFound from './pages/NotFound'
-import Dashboard from './pages/Employee/Dashboard'
+import EmployeeDashboard from './pages/Employee/EmployeeDashboard'
+import ManagerDashboard from './pages/Manager/ManagerDashboard'
 
 function App() {
 
@@ -15,7 +16,11 @@ function App() {
           <Route path="/auth/*" element={<Authenticate />} />
 
           {/* employee routes */}
-          <Route path="/employee/dashboard" element={<Dashboard />} />
+          <Route path="/employee/dashboard" element={<EmployeeDashboard />} />
+
+          {/* manager routes */}
+          <Route path="/manager/dashboard" element={<ManagerDashboard />} />
+
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>

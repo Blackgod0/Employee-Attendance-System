@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authenticateJWT from "../middleware/authMiddleware";
+import { authenticateManager } from "../middleware/authMiddleware";
 import {
   getAllAttendance,
   getEmployeeAttendance,
@@ -10,14 +10,14 @@ import {
 
 const router = Router();
 
-router.get("/all", authenticateJWT, getAllAttendance);
+router.get("/all", authenticateManager, getAllAttendance);
 
-router.get("/employee/:id", authenticateJWT, getEmployeeAttendance);
+router.get("/employee/:id", authenticateManager, getEmployeeAttendance);
 
-router.get("/summary", authenticateJWT, getTeamSummary);
+router.get("/summary", authenticateManager, getTeamSummary);
 
-router.get("/export", authenticateJWT, exportAttendanceCsv);
+router.get("/export", authenticateManager, exportAttendanceCsv);
 
-router.get("/today-status", authenticateJWT, getTodayTeamStatus);
+router.get("/today-status", authenticateManager, getTodayTeamStatus);
 
 export default router;

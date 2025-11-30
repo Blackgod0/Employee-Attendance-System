@@ -37,7 +37,7 @@ export default function useAuthApi() {
     async function login(
         email: string,
         password: string
-    ): Promise<{ success: boolean; message: string }> {
+    ): Promise<{ success: boolean; message: string, manager?: boolean }> {
         try {
             const response = await apiFetch(`/auth/login/`, {
                 method: "POST",
@@ -58,6 +58,7 @@ export default function useAuthApi() {
                 return {
                     success: true,
                     message: result.message || "Login successful",
+                    manager: result.manager
                 };
             } else {
                 return {

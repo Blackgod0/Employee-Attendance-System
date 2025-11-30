@@ -1,39 +1,6 @@
 // src/core/attendance_dashboard_api.ts
+import type { AttendanceHistoryResponse, AttendanceRecord, AttendanceSummary, TodayStatusResponse } from "../../data/types";
 import { apiFetch } from "./api_configs";
-
-export type AttendanceStatus = "present" | "absent" | "late" | "half-day";
-
-export interface AttendanceRecord {
-  _id: string;
-  userId: string;
-  date: string;
-  checkInTime: string | null;
-  checkOutTime: string | null;
-  status: AttendanceStatus;
-  totalHours: number;
-  createdAt: string;
-}
-
-export interface AttendanceHistoryResponse {
-  success: boolean;
-  count: number;
-  history: AttendanceRecord[];
-}
-
-export interface AttendanceSummary {
-  present: number;
-  absent: number;
-  late: number;
-  halfDay: number;
-  totalDays: number;
-  totalHours: number;
-}
-
-export interface TodayStatusResponse {
-  success: boolean;
-  status: AttendanceStatus | "not-marked";
-  attendance: AttendanceRecord | null;
-}
 
 export default function useAttendanceDashboardApi() {
   async function getHistory(month?: string): Promise<AttendanceHistoryResponse> {

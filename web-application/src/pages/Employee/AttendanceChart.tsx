@@ -1,20 +1,10 @@
 import React, { useState, useMemo } from "react";
 import { ChevronDown, Filter, type LucideIcon } from "lucide-react";
+import type { AttendanceRecord } from "../../data/types";
 
 // --- Types ---
 
 export type AttendanceStatus = "present" | "absent" | "late" | "half-day";
-
-export interface AttendanceRecord {
-  _id: string;
-  userId: string;
-  date: string;
-  checkInTime: string | null;
-  checkOutTime: string | null;
-  status: AttendanceStatus;
-  totalHours: number;
-  createdAt: string;
-}
 
 export interface ApiResponse {
   success: boolean;
@@ -135,8 +125,8 @@ const AttendanceChart: React.FC<AttendanceChartProps> = ({ data }) => {
   const maxHours = 10; // Y axis max
 
   return (
-    <div className="flex-1 p-8 font-sans">
-      <div className="bg-white p-8 rounded-2xl shadow-sm">
+    <div className="flex-1 p-8 pr-0">
+      <div className="bg-white p-8 rounded-2xl">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
           <div>

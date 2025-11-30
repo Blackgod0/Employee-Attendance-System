@@ -70,7 +70,7 @@ export default function TodayStatusCard({
     }
 
     return (
-        <div className="w-full bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <div className="w-full bg-white rounded-2xl p-5 border border-slate-100">
             <div className="flex items-center justify-between mb-3">
                 <div>
                     <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">

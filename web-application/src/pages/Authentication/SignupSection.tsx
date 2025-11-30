@@ -79,7 +79,7 @@ export default function Signup() {
             const response = await register(formData);
             if (response.success) {
                 alert("Registration successful");
-                window.location.href = "/";
+                window.location.href = "/employee/dashboard";
             } else {
                 alert(response.message);
             }
@@ -102,7 +102,7 @@ export default function Signup() {
 
     return (
         <motion.main className="h-screen w-screen flex flex-col items-center relative overflow-x-hidden" initial={{ x: 120 }} animate={{ x: 0 }} transition={{ duration: 0.1, ease: "easeIn" }}>
-            <p className="fixed top-4 left-4 text-2xl font-medium"> EchoDraft </p>
+            <p className="fixed top-4 left-4 text-2xl font-medium"> AttendoX </p>
 
             {/* signup section */}
             <form
