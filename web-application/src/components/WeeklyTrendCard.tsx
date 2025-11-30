@@ -47,7 +47,7 @@ export default function WeeklyTrendChart({ records }: WeeklyTrendChartProps) {
     );
 
     return (
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-100">
+        <div className="bg-white rounded-xl p-6 border border-slate-100">
             <div className="flex justify-between items-center mb-4">
                 <h3 className="text-sm font-semibold text-slate-800">Weekly Attendance Trend</h3>
                 <p className="text-xs text-slate-400">Last 7 days</p>

@@ -30,7 +30,7 @@ export default function DepartmentAttendanceChart({
   const maxVal = data.reduce((m, d) => Math.max(m, d.count), 1);
 
   return (
-    <div className="bg-white rounded-xl flex flex-col justify-center h-full p-6 shadow-sm border border-slate-100">
+    <div className="bg-white rounded-xl flex flex-col justify-center h-full p-6 border border-slate-100">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-sm font-semibold text-slate-800">Attendance by Department</h3>
         <p className="text-xs text-slate-400">Based on recent days</p>
