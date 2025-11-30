@@ -3,6 +3,7 @@ import app_icons from "../../core/ui/app_icons";
 import IconButton from "../../core/ui/components/Iconbutton";
 import InputField from "../../core/ui/components/Inputfield";
 import useAuthApi from "../../core/api/authentication_api";
+import { easeIn, motion } from "framer-motion";
 
 export default function Signin() {
     // data variables
@@ -81,16 +82,18 @@ export default function Signin() {
     }, []);
 
     return (
-        <main className="min-h-screen w-screen flex flex-col items-center relative overflow-x-hidden">
+        <motion.main className="min-h-screen w-screen flex flex-col items-center relative overflow-x-hidden" initial={{ x: -120 }} animate={{ x: 0 }} transition={{ duration: 0.3, ease: "easeIn" }}>
             <p className="fixed top-4 left-4 text-2xl font-medium"> EchoDraft </p>
 
             <div className="relative h-[440px] w-[450px] pt-24">
                 {/* email & password section */}
                 <form onSubmit={handleForm}>
-                    <p className="text-3xl font-medium"> Login or sign in </p>
-                    <p className="text-gray-500 w-[450px] mt-3">
-                        You will craft smarter scripts and can receive media, document responses, and more.
-                    </p>
+                    <span className="text-center">
+                        <p className="text-3xl font-medium"> Login or sign in </p>
+                        <p className="text-gray-500 w-[450px] mt-3">
+                            You will craft smarter scripts and can receive media, document responses, and more.
+                        </p>
+                    </span>
 
                     <span className="mt-12 w-full flex flex-col gap-6">
                         <InputField
@@ -127,9 +130,9 @@ export default function Signin() {
 
             {/* login via providers */}
             <div className="flex gap-3 w-[450px] items-center my-12">
-                <span className="flex-1 h-[1px] bg-gray-300"></span>
+                <span className="flex-1 h-px bg-gray-300"></span>
                 <p> or </p>
-                <span className="flex-1 h-[1px] bg-gray-300"></span>
+                <span className="flex-1 h-px bg-gray-300"></span>
             </div>
 
             <div className="flex flex-col w-[450px] gap-4 pb-24 items-center">
@@ -142,12 +145,12 @@ export default function Signin() {
                     <p> Don't have an account? </p>
                     <p
                         className="text-blue-400 underline underline-offset-2 cursor-pointer"
-                        onClick={() => (window.location.href = "/authenticate/sign-up")}
+                        onClick={() => (window.location.href = "/auth/sign-up")}
                     >
                         Sign up
                     </p>
                 </span>
             </div>
-        </main>
+        </motion.main>
     );
 }

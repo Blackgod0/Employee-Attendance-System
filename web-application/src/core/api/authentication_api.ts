@@ -18,6 +18,7 @@ export default function useAuthApi() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(data),
+                credentials: "include"
             });
 
             const result = await response.json();
@@ -44,12 +45,12 @@ export default function useAuthApi() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
+                credentials: "include"
             });
 
             const result = await response.json();
 
             if (response.ok) {
-                // Store access token (refresh token comes via HttpOnly cookie or separate storing strategy)
                 if (result.accessToken) {
                     localStorage.setItem("accessToken", result.accessToken);
                 }
@@ -77,7 +78,7 @@ export default function useAuthApi() {
     async function getCurrentUser(tries = 3) {
 
         if (tries == 0) {
-            // window.location.href = "/authenticate";
+            window.location.href = "/authenticate";
             return;
         }
 
@@ -96,7 +97,7 @@ export default function useAuthApi() {
         if (res.status === 401) {
             let refreshRes = await apiFetch("/auth/refresh_token/", {
                 method: "POST",
-                credentials: "include" // send HttpOnly cookie
+                credentials: "include"
             });
 
             if (refreshRes.ok) {

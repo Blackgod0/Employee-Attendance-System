@@ -3,6 +3,7 @@ import useAuthApi, { type RegistrationData } from "../../core/api/authentication
 import app_icons from "../../core/ui/app_icons";
 import InputField from "../../core/ui/components/Inputfield";
 import IconButton from "../../core/ui/components/Iconbutton";
+import { motion } from "framer-motion";
 
 export default function Signup() {
     // data variables
@@ -100,7 +101,7 @@ export default function Signup() {
     }, []);
 
     return (
-        <main className="h-screen w-screen flex flex-col items-center relative overflow-x-hidden">
+        <motion.main className="h-screen w-screen flex flex-col items-center relative overflow-x-hidden" initial={{ x: 120 }} animate={{ x: 0 }} transition={{ duration: 0.3, ease: "easeIn" }}>
             <p className="fixed top-4 left-4 text-2xl font-medium"> EchoDraft </p>
 
             {/* signup section */}
@@ -180,9 +181,9 @@ export default function Signup() {
 
             {/* signup via providers */}
             <div className="flex gap-3 w-[450px] items-center my-12">
-                <span className="flex-1 h-[1px] bg-gray-300"></span>
+                <span className="flex-1 h-px bg-gray-300"></span>
                 <p> or </p>
-                <span className="flex-1 h-[1px] bg-gray-300"></span>
+                <span className="flex-1 h-px bg-gray-300"></span>
             </div>
 
             <div className="flex flex-col w-[450px] gap-4 pb-24 items-center">
@@ -195,12 +196,12 @@ export default function Signup() {
                     <p> Have an account? </p>
                     <p
                         className="text-blue-400 underline underline-offset-2 cursor-pointer"
-                        onClick={() => (window.location.href = "/authenticate/sign-in")}
+                        onClick={() => (window.location.href = "/auth/sign-in")}
                     >
                         Sign in
                     </p>
                 </span>
             </div>
-        </main>
+        </motion.main>
     );
 }

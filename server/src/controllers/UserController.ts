@@ -7,10 +7,20 @@ import jwt from "jsonwebtoken";
 import User, { IUser } from "../models/UserModel";
 import { ApiMessages } from "../utils/types/apiMessages";
 import { ApiError } from "../utils/types/errors";
+import { AuthUser } from "../utils/types/authTypes";
 
 
 const ACCESS_TOKEN_SECRET = process.env.JWT_SECRET as string;
 const REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH as string;
+
+// helper functions
+function createAccessToken(payload: { _id: string; email: string, role?: "EMPLOYEE" | "MANAGER" }) {
+  return jwt.sign({ ...payload, role: payload.role ?? "EMPLOYEE" }, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
+}
+
+function createRefreshToken(payload: { _id: string; email: string, role?: "EMPLOYEE" | "MANAGER" }) {
+  return jwt.sign({ ...payload, role: payload.role ?? "EMPLOYEE" }, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+}
 
 // @desc    Register an employee user
 // @route   POST /users/register
@@ -38,7 +48,7 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     name,
     email,
     password: hashedPassword,
-    role: "employee",
+    role: "EMPLOYEE",
     department: department || "",
     employeeId,
   });
@@ -47,27 +57,32 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
     throw new ApiError(ApiMessages.INTERNAL_SERVER_ERROR);
   }
 
-  const accessToken = jwt.sign(
-    { userId: user._id, email: user.email },
-    ACCESS_TOKEN_SECRET,
-    { expiresIn: "1d" }
+  const _id = user._id.toString();
+
+  const accessToken = createAccessToken(
+    { _id, email: user.email },
   );
 
-  const refreshToken = jwt.sign(
-    { userId: user._id, email: user.email },
-    REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" }
+  const refreshToken = createRefreshToken(
+    { _id, email: user.email }
   );
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
   res.status(201).json({
     success: true,
     accessToken,
-    refreshToken,
   });
 });
 
 // @desc    Login user (employee or manager)
-// @route   POST /users/login
+// @route   POST /auth/login
 // @access  Public
 export const loginUser = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body as { email?: string; password?: string };
@@ -87,27 +102,32 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(ApiMessages.INVALID_CREDENTIALS);
   }
 
-  const accessToken = jwt.sign(
-    { userId: user._id, email: user.email },
-    ACCESS_TOKEN_SECRET,
-    { expiresIn: "1d" }
+  const _id = user._id.toString();
+
+  const accessToken = createAccessToken(
+    { _id, email: user.email },
   );
 
-  const refreshToken = jwt.sign(
-    { userId: user._id, email: user.email },
-    REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" }
+  const refreshToken = createRefreshToken(
+    { _id, email: user.email },
   );
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
 
   res.status(200).json({
     success: true,
     accessToken,
-    refreshToken,
   });
 });
 
 // @desc    Current user info
-// @route   GET /users/current
+// @route   GET /auth/current
 // @access  Private
 export const currentUser = asyncHandler(async (req: Request, res: Response) => {
   if (!req.user) {
@@ -126,3 +146,44 @@ export const currentUser = asyncHandler(async (req: Request, res: Response) => {
     user,
   });
 });
+
+// @desc    Current user info
+// @route   POST /auth/current
+// @access  Private
+export const refreshToken = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies?.refreshToken;
+
+    if (!token) {
+      return res.status(401).json({ error: "No refresh token found" });
+    }
+
+    jwt.verify(token, REFRESH_TOKEN_SECRET, async (err: jwt.VerifyErrors | null, decoded: any) => {
+      if (err || !decoded || typeof decoded === "string") {
+        return res.status(401).json({ error: "Invalid refresh token" });
+      }
+
+      const { _id, email } = decoded as AuthUser;
+
+      const user = await User.findById(_id);
+      if (!user) {
+        return res.status(401).json({ error: "User no longer exists" });
+      }
+
+      const newAccessToken = createAccessToken({ _id, email });
+      const newRefreshToken = createRefreshToken({ _id, email });
+
+      res.cookie("refreshToken", newRefreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/auth/refresh_token/", // only sent to this path
+      });
+
+      return res.status(200).json({ accessToken: newAccessToken });
+    });
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+    return res.status(500).json({ error: "Something went wrong, please try again." });
+  }
+};

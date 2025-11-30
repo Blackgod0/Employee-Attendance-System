@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 import connectDb from './config/dbConnection';
+import { configDotenv } from 'dotenv';
 
+configDotenv();
 const app = express();
 
 // DB config

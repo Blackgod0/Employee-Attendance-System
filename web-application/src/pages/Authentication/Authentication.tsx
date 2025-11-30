@@ -14,7 +14,7 @@ export default function Authenticate() {
 
 function Redirect() {
     useEffect(() => {
-        window.location.href = "/authenticate/sign-up"
+        window.location.href = "/auth/sign-up"
     }, [])
 
     return <section></section>
