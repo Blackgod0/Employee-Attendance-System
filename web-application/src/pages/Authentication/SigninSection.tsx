@@ -78,7 +78,7 @@ export default function Signin() {
     }, [formData]);
 
     useEffect(() => {
-        document.title = "Echo Draft - Sign in";
+        document.title = "AttendoX - Sign in";
     }, []);
 
     return (

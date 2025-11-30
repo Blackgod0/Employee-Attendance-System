@@ -2,6 +2,10 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 import connectDb from './config/dbConnection';
 import { configDotenv } from 'dotenv';
+import cors from 'cors';
+
+import { ApiMessages } from './utils/types/apiMessages';
+import { errorHandler } from './middleware/errorMiddleware';
 
 configDotenv();
 const app = express();
@@ -9,12 +13,27 @@ const app = express();
 // DB config
 connectDb();
 
+// cors
+const corsOptions = {
+    origin: ['http://localhost:5173'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+
 // Middleware
 app.use(express.json());
+
+// Routes
 import UserRoutes from './routes/UserRoutes';
-import { ApiMessages } from './utils/types/apiMessages';
-import { errorHandler } from './middleware/errorMiddleware';
 app.use('/api/auth', UserRoutes);
+
+import EmployeeAttendanceRoutes from './routes/EmployeeAttendanceRoutes';
+app.use('/api/attendance', EmployeeAttendanceRoutes);
+import ManagerAttendanceRoutes from './routes/ManagerAttendanceRoutes';
+app.use('/api/attendance', ManagerAttendanceRoutes);
 
 
 // Server starting
