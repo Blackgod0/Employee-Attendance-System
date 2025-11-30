@@ -1,5 +1,5 @@
 // src/core/attendance_dashboard_api.ts
-import type { AttendanceHistoryResponse, AttendanceRecord, AttendanceSummary, TodayStatusResponse } from "../../data/types";
+import type { AttendanceHistoryResponse, AttendanceSummary, TodayStatusResponse } from "../../data/types";
 import { apiFetch } from "./api_configs";
 
 export default function useAttendanceDashboardApi() {

@@ -3,7 +3,7 @@ import app_icons from "../../core/ui/app_icons";
 import IconButton from "../../core/ui/components/Iconbutton";
 import InputField from "../../core/ui/components/Inputfield";
 import useAuthApi from "../../core/api/authentication_api";
-import { easeIn, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export default function Signin() {
     // data variables

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
-    Menu, X, Check, ArrowRight, Play, Shield,
-    BarChart3, Users, Zap, Globe, ChevronDown,
+    Menu, X, ArrowRight, Play, Shield,
+    Users, Zap, Globe, ChevronDown,
     ChevronUp, Lock, CreditCard, PieChart
 } from 'lucide-react';
 

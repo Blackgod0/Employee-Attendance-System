@@ -1,4 +1,4 @@
-import { Home, UserPlus, User, Calendar, Gift, LogOut, Check, BellRing } from "lucide-react";
+import { Home, User, Calendar, LogOut, Check, BellRing } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export const DashboardSidebar: React.FC = () => {

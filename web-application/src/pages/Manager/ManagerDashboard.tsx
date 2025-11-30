@@ -18,7 +18,7 @@ export default function ManagerDashboard() {
   const [rangeRecords, setRangeRecords] = useState<AttendanceRecord[]>([]);
   const [presentCount, setPresentCount] = useState(0);
   const [absentCount, setAbsentCount] = useState(0);
-  const [lateCount, setLateCount] = useState(0);
+  const [_, setLateCount] = useState(0);
   const [totalEmployees, setTotalEmployees] = useState(0);
 
   useEffect(() => {
